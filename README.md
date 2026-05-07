@@ -613,4 +613,7 @@ PHP_Laravel10_Scout_Extended
 ---
 
 Your PHP_Laravel10_Scout_Extended Project is now ready!
+<<<<<<< HEAD
 
+=======
+>>>>>>> development
