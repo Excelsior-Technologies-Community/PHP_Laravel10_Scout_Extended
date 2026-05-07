@@ -3,11 +3,11 @@
 
 <head>
     <meta charset="UTF-8">
-    <title>Product Search</title>
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Product Studio Pro</title>
 
     <script src="https://cdn.tailwindcss.com"></script>
 
-    <link rel="preconnect" href="https://fonts.googleapis.com">
     <link href="https://fonts.googleapis.com/css2?family=Inter:wght@400;500;600;700&display=swap" rel="stylesheet">
 
     <style>
@@ -15,80 +15,144 @@
             font-family: 'Inter', sans-serif;
         }
     </style>
-
 </head>
 
-<body class="bg-gradient-to-br from-gray-100 to-gray-200 min-h-screen">
+<body class="bg-gradient-to-br from-gray-900 via-gray-800 to-black min-h-screen text-white">
 
-    <div class="max-w-6xl mx-auto py-12 px-6">
 
-        <!-- Header -->
-        <div class="flex items-center justify-between mb-10">
+    <!-- TOP HEADER -->
+    <div class="max-w-7xl mx-auto px-6 py-6 flex justify-between items-center">
 
-            <div>
-                <h1 class="text-4xl font-bold text-gray-800">
-                    Product Search
-                </h1>
-
-                <p class="text-gray-500 mt-1">
-                    Powered by Laravel Scout + Algolia
-                </p>
-            </div>
-
-            <a href="/product/create"
-                class="bg-gradient-to-r from-green-500 to-green-600 text-white px-6 py-3 rounded-xl shadow-lg hover:scale-105 transition duration-200">
-                + Add Product
-            </a>
-
+        <div>
+            <h1 class="text-3xl font-bold">
+                ⚡ Product Studio Pro
+            </h1>
+            <p class="text-gray-400 text-sm">
+                Smart Search • Fast Management • Modern UI
+            </p>
         </div>
 
+        <a href="/product/create"
+            class="bg-indigo-500 hover:bg-indigo-600 px-5 py-3 rounded-xl transition">
 
-        <!-- Search Box -->
-        <div class="bg-white rounded-xl shadow-md p-4 mb-10">
+            + New Product
 
-            <form method="GET" action="/" class="flex items-center gap-3">
+        </a>
+
+    </div>
+
+
+    <div class="max-w-7xl mx-auto px-6 py-8">
+
+
+        <!-- ALERT -->
+        @if(session('success'))
+        <div class="mb-6 bg-green-500/20 border border-green-500 text-green-300 px-5 py-3 rounded-xl">
+            {{ session('success') }}
+        </div>
+        @endif
+
+
+        <!-- FLOATING SEARCH BOX -->
+        <div class="bg-white/10 backdrop-blur-xl border border-white/20 p-5 rounded-2xl mb-8">
+
+            <form method="GET" class="flex gap-3">
 
                 <input
                     type="text"
                     name="search"
                     value="{{ request('search') }}"
                     placeholder="Search products..."
-                    class="flex-1 px-4 py-3 border rounded-xl focus:outline-none focus:ring-2 focus:ring-blue-500">
+                    class="w-full px-5 py-3 rounded-xl bg-black/30 border border-gray-600 text-white focus:ring-2 focus:ring-indigo-500 outline-none">
 
-                <button
-                    class="bg-blue-600 text-white px-6 py-3 rounded-xl hover:bg-blue-700 transition">
+                <button class="bg-indigo-500 px-6 rounded-xl hover:bg-indigo-600 transition">
                     Search
                 </button>
+
+                @if(request('search'))
+                <a href="/" class="bg-gray-700 px-5 py-3 rounded-xl hover:bg-gray-600">
+                    Reset
+                </a>
+                @endif
 
             </form>
 
         </div>
 
 
-        <!-- Product Grid -->
-        <div class="grid grid-cols-1 md:grid-cols-2 lg:grid-cols-3 gap-8">
+        <!-- HEADER -->
+        <div class="flex justify-between items-center mb-5">
 
+            <h2 class="text-lg font-semibold text-gray-300">
+                Product List
+            </h2>
+
+            <span class="text-sm text-gray-400">
+                Total: {{ $products->total() ?? count($products) }}
+            </span>
+
+        </div>
+
+
+        <!-- TABLE CARD STYLE -->
+        <div class="bg-white/10 backdrop-blur-xl border border-white/20 rounded-2xl overflow-hidden">
+
+
+            <!-- HEADER -->
+            <div class="grid grid-cols-12 bg-white/5 text-gray-300 text-sm p-4">
+
+                <div class="col-span-3">Name</div>
+                <div class="col-span-4">Description</div>
+                <div class="col-span-2">Price</div>
+                <div class="col-span-3 text-center">Actions</div>
+
+            </div>
+
+
+            <!-- DATA -->
             @forelse($products as $product)
 
-            <div class="bg-white/90 backdrop-blur rounded-xl shadow-lg p-6 hover:shadow-2xl hover:-translate-y-1 transition duration-300">
+            <div class="grid grid-cols-12 p-4 border-b border-white/10 hover:bg-white/5 transition">
 
-                <h3 class="text-xl font-semibold text-gray-800 mb-2">
+                <!-- NAME -->
+                <div class="col-span-3 font-semibold text-white">
                     {{ $product->name }}
-                </h3>
+                </div>
 
-                <p class="text-gray-500 text-sm mb-4">
-                    {{ $product->description }}
-                </p>
+                <!-- DESC -->
+                <div class="col-span-4 text-gray-400 text-sm">
+                    {{ Str::limit($product->description, 60) }}
+                </div>
 
-                <div class="flex items-center justify-between">
+                <!-- PRICE -->
+                <div class="col-span-2 font-bold text-green-400">
+                    ₹{{ number_format($product->price, 2) }}
+                </div>
 
-                    <span class="text-green-600 text-lg font-bold">
-                        ₹{{ number_format($product->price, 2) }}
-                    </span>
+                <!-- ACTIONS -->
+                <div class="col-span-3 flex justify-center gap-2">
 
-                    <span class="text-xs bg-gray-100 px-3 py-1 rounded-full text-gray-500">
-                        Product
-                    </span>
+                    <a href="/product/{{ $product->id }}/edit"
+                        class="bg-blue-500 hover:bg-blue-600 px-3 py-2 rounded-lg text-sm transition">
+
+                        Edit
+
+                    </a>
+
+                    <form action="/product/{{ $product->id }}" method="POST">
+
+                        @csrf
+                        @method('DELETE')
+
+                        <button
+                            onclick="return confirm('Delete this product?')"
+                            class="bg-red-500 hover:bg-red-600 px-3 py-2 rounded-lg text-sm transition">
+
+                            Delete
+
+                        </button>
+
+                    </form>
 
                 </div>
 
@@ -96,19 +160,25 @@
 
             @empty
 
-            <div class="col-span-3 text-center py-16">
+            <div class="p-10 text-center text-gray-400">
 
-                <p class="text-gray-500 text-lg">
-                    No products found
-                </p>
-
-                <p class="text-gray-400 text-sm mt-2">
-                    Try searching for another product
-                </p>
+                No products found
 
             </div>
 
             @endforelse
+
+        </div>
+
+
+        <!-- PAGINATION -->
+        <div class="mt-8 flex justify-center">
+
+            <div class="bg-white/10 border border-white/20 px-4 py-3 rounded-xl">
+
+                {{ $products->links() }}
+
+            </div>
 
         </div>
 
