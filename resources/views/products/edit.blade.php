@@ -44,6 +44,31 @@
             <div class="mb-5">
 
                 <label class="block mb-2">
+                    Category
+                </label>
+
+                <input
+                    type="text"
+                    name="category"
+                    list="category-list"
+                    value="{{ $product->category }}"
+                    class="w-full border rounded-xl px-4 py-3">
+
+                <datalist id="category-list">
+                    @foreach($categories as $cat)
+                    <option value="{{ $cat }}"></option>
+                    @endforeach
+                </datalist>
+
+                @error('category')
+                    <p class="text-red-500 text-sm mt-1">{{ $message }}</p>
+                @enderror
+
+            </div>
+
+            <div class="mb-5">
+
+                <label class="block mb-2">
                     Description
                 </label>
 
