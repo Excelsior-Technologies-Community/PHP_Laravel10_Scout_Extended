@@ -9,7 +9,7 @@ class Product extends Model
 {
     use Searchable;
 
-    protected $fillable = ['name','description','price'];
+    protected $fillable = ['name', 'description', 'price', 'category'];
 
     public function toSearchableArray()
     {
@@ -18,6 +18,7 @@ class Product extends Model
             'name' => $this->name,
             'description' => $this->description,
             'price' => $this->price,
+            'category' => $this->category,
         ];
     }
 }
