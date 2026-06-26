@@ -14,3 +14,5 @@ Route::get('/product/{product}/edit', [ProductController::class, 'edit']);
 Route::put('/product/{product}', [ProductController::class, 'update']);
 
 Route::delete('/product/{product}', [ProductController::class, 'destroy']);
+
+Route::delete('/search-history/clear', [ProductController::class, 'clearSearchHistory']);

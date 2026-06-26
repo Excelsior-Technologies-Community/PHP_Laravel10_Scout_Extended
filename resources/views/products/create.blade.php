@@ -37,7 +37,6 @@
 
                 @csrf
 
-                <!-- Product Name -->
                 <div>
                     <label class="text-sm font-medium text-gray-600">
                         Product Name
@@ -51,8 +50,26 @@
                         required>
                 </div>
 
+                <div>
+                    <label class="text-sm font-medium text-gray-600">
+                        Category
+                    </label>
 
-                <!-- Description -->
+                    <input
+                        type="text"
+                        name="category"
+                        list="category-list"
+                        placeholder="Enter or pick a category"
+                        class="w-full mt-1 border rounded-xl px-4 py-3 focus:outline-none focus:ring-2 focus:ring-blue-500"
+                        required>
+
+                    <datalist id="category-list">
+                        @foreach($categories as $cat)
+                        <option value="{{ $cat }}"></option>
+                        @endforeach
+                    </datalist>
+                </div>
+
                 <div>
                     <label class="text-sm font-medium text-gray-600">
                         Description
@@ -66,8 +83,6 @@
                         required></textarea>
                 </div>
 
-
-                <!-- Price -->
                 <div>
                     <label class="text-sm font-medium text-gray-600">
                         Price (₹)
@@ -81,8 +96,6 @@
                         required>
                 </div>
 
-
-                <!-- Buttons -->
                 <div class="flex items-center gap-4 pt-4">
 
                     <button
@@ -90,8 +103,8 @@
                         Save Product
                     </button>
 
-                    <a
-                        href="/"
+                    
+                        <a href="/"
                         class="text-gray-600 hover:text-gray-900">
                         Cancel
                     </a>
